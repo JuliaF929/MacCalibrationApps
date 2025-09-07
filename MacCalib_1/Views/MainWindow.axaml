@@ -1,0 +1,93 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MacCalib_1.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MacCalib_1.Converters"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="900"
+        x:Class="MacCalib_1.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="MacCalib_1"
+        Width="1200"
+        Height="800">
+    <Window.Background>
+        <SolidColorBrush Color="#AFF8E7"/>
+    </Window.Background>
+    <Window.Resources>
+        <local:RadioButtonConverter x:Key="RadioButtonConverter"/>
+    </Window.Resources>
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel>
+        <TextBlock FontSize="30" Margin="20"
+                   Text="Instructions for Calibration application that shall be integrated in Julia manager:" />
+
+        <TextBlock FontSize="20" Margin="20">
+            <Run Text="1. Create json file with name 'output*.json' at ../Output/" />
+            <LineBreak/>
+            <Run Text="2. output*.json must contain the following keys:" />
+            <LineBreak/>
+            <Run Text="  2.1. 'Result' shall be 'Pass' or 'Fail'." />
+            <LineBreak/>
+            <Run Text="  2.2. 'Error' can be empty if Pass, have to contain error string if Fail." />
+            <LineBreak/>
+            <Run Text="  2.3. Any amount of single values that can be string, int, double." />
+        </TextBlock>
+
+        <TextBlock FontSize="30" Margin="20" Text="Example:" />
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontSize="20" Margin="30,0,0,0" Text="Result:" />
+            <RadioButton FontSize="20" Margin="30,0,0,0" Content="Pass"
+                         GroupName="ResultGroup"
+                         IsChecked="{Binding SelectedResult, Mode=TwoWay, Converter={StaticResource RadioButtonConverter}, ConverterParameter=Pass}" />
+            <RadioButton FontSize="20" Margin="30,0,0,0" Content="Fail"
+                         GroupName="ResultGroup"
+                         IsChecked="{Binding SelectedResult, Mode=TwoWay, Converter={StaticResource RadioButtonConverter}, ConverterParameter=Fail}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontSize="20" Margin="30,0,0,0" Text="Error:" />
+            <TextBox Text="{Binding ErrorStr}" Width="200" Margin="30,0,0,0" MaxWidth="200" Height="30"/>
+        </StackPanel>
+
+        <Separator Margin="5"/>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontSize="20" Margin="30,30,30,30" FontWeight="Bold" Text="Fill parameters:" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontSize="20" Margin="30,0,0,0" Text="Param name:" />
+            <TextBox Text="{Binding ParamName}" Width="200" Margin="30,0,0,0" MaxWidth="200" Height="30"/>
+            <TextBlock FontSize="20" Margin="30,0,0,0" Text="Param value:" />
+            <TextBox Text="{Binding ParamValue}" Width="200" Margin="30,0,0,0" MaxWidth="200" Height="30"/>
+            <Button Width="200" Height="30" Margin="30,0,0,0" Command="{Binding AddParamCommand}" Content="Add"/>
+        </StackPanel>
+
+        <StackPanel Margin="10">
+            <ListBox ItemsSource="{Binding ParamsList}" Height="150">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                            <TextBlock Text=": " />
+                            <TextBlock Text="{Binding Value}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Width="200" Height="30" Margin="0,0,40,0" Command="{Binding CancelCommand}" Content="Cancel"/>
+            <Button Width="200" Height="30" Margin="0,0,40,0" Command="{Binding SaveJsonAndExitCommand}" 
+                    Content="Save output.json and exit"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
