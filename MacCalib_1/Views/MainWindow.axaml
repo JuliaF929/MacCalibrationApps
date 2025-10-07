@@ -8,7 +8,7 @@
         x:Class="MacCalib_1.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="MacCalib_1"
+        Title="{Binding WindowTitle}"
         Width="1200"
         Height="800">
     <Window.Background>
@@ -22,6 +22,8 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 
     <StackPanel>
         <TextBlock FontSize="30" Margin="20"
@@ -90,4 +92,5 @@
                     Content="Save output.json and exit"/>
         </StackPanel>
     </StackPanel>
+    </ScrollViewer>
 </Window>

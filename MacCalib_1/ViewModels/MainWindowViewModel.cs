@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using System.Windows.Input;
 using System.Xml;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using System.Reflection;
 
 namespace MacCalib_1.ViewModels;
 
@@ -62,7 +64,16 @@ namespace MacCalib_1.ViewModels;
         public ICommand CancelCommand { get; }
         public ICommand SaveJsonAndExitCommand { get; }
 
-
+        private string _windowTitle; 
+        public string WindowTitle
+        {
+            get { return _windowTitle; }
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged(nameof(WindowTitle));
+            }
+        }
         private string _paramName = string.Empty;
         public string ParamName
         {
@@ -113,12 +124,24 @@ namespace MacCalib_1.ViewModels;
             }
         }
 
-        public MainWindowViewModel()
-        {
-            AddParamCommand = new RelayCommand(AddParamToList);
-            CancelCommand = new RelayCommand(OnCancel);
-            SaveJsonAndExitCommand = new RelayCommand(OnSaveJsonAndExit);
-        }
+    public MainWindowViewModel()
+    {
+        AddParamCommand = new RelayCommand(AddParamToList);
+        CancelCommand = new RelayCommand(OnCancel);
+        SaveJsonAndExitCommand = new RelayCommand(OnSaveJsonAndExit);
+
+        // Get the currently executing assembly 
+        var assembly = Assembly.GetExecutingAssembly();
+
+        // Get file version info 
+        var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+        string? fileVersion = fvi?.FileVersion;
+
+        // Get the Description attribute 
+        var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()? .Description ?? string.Empty;
+
+        WindowTitle = description + " - " + (fileVersion == null ? string.Empty : fileVersion);
+    }
 
     private void OnCancel(object parameter)
     {

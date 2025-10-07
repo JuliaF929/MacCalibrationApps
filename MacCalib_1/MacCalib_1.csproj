@@ -19,6 +19,21 @@
     <CFBundleIdentifier>com.yourcompany.maccalib1</CFBundleIdentifier>
     <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
     <CFBundleVersion>1</CFBundleVersion>
+
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
+   <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion> 
+   
+   <!-- Assembly info --> 
+   <Company>Calibrix</Company> 
+   <Product>Mac Calib Demo</Product> 
+   <AssemblyTitle>Mac Calib Demo</AssemblyTitle> 
+   <Description>Mac Calib Demo (to be integrated in Calibrix)</Description>
+    <!-- Version info -->
+   <Version>1.0.0.1</Version> 
+   <FileVersion>1.0.0.1</FileVersion> 
+   <AssemblyVersion>1.0.0.1</AssemblyVersion>
+   <InformationalVersion>1.0.0.1</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
